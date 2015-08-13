@@ -2,8 +2,18 @@
  * Created by James on 9/20/14.
  */
 
-exports.getNumbers = getNumbers;
+var numberModel = require('../models/NumbersModel.js');
 
-getNumbers = function(req, res){
+exports.getNumbers = getNumbers;
+exports.postNumbers = postNumbers;
+
+function getNumbers(req, res) {
+    if(req.value == 'undefined'){
+        callback(null,null);
+    }
+    numberModel.retrieveNumbers
+}
+
+function postNumbers(req, res){
 
 }
