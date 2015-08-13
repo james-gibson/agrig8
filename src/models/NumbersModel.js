@@ -1,6 +1,4 @@
 
-exports.retrieveNumbers = retrieveNumbers;
-exports.insertNumber = insertNumber;
 
 var numbersById = {};
 
@@ -22,4 +20,6 @@ insertNumber = function(id, value, callback){
     callback(null,values);
 }
 
+exports.retrieveNumbers = retrieveNumbers;
+exports.insertNumber = insertNumber;
 
