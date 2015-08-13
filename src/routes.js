@@ -10,7 +10,7 @@ var authHandler = require('./handlers/AuthenticationHandler.js'),
     };
 
 function verifyUserKey(req,res,next) {
-    var user = req.query.user;
+    var streamToken = req.query.id;
     var key = req.query.key;
     var token = authModel.getToken(user,key);
 
@@ -27,7 +27,6 @@ function verifyUserKey(req,res,next) {
 
 function verifyAPIToken(req,res,next) {
     var token = req.query.token;
-
 
     if(!authModel.validateToken(token)) {
         res.statusCode = 401;
@@ -54,9 +53,12 @@ exports.setup = function (app) {
     app.get('/api[/]?',
         auth,
         handlers.api.getRoutes);
-    app.get('/api/number[/]?',
+    app.get('/api/numbers/:id?',
         auth,
-        handlers.api.numbers.getNumbers);
+        handlers.numbers.getNumbers);
+    app.post('/api/numbers/:id?',
+        auth,
+        handlers.numbers.postNumbers);
    /* app.get('/api/summary[/]?',
         auth,
         handlers.resume.getSummary);
