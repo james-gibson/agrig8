@@ -34,5 +34,4 @@ function getRoutes(req,res) {
     }
 
     convertRouteToUrl(0);
-
 }
