@@ -10,16 +10,16 @@ var authHandler = require('./handlers/AuthenticationHandler.js'),
     };
 
 function verifyUserKey(req,res,next) {
-    var streamToken = req.query.id;
-    var key = req.query.key;
-    var token = authModel.getToken(user,key);
-
     if(typeof key === "undefined"
         || user === "undefined"
         || !token) {
         res.statusCode = 401;
         return res.json({message:"Invalid User and Key", code:401});
     }
+
+    var streamToken = req.query.id;
+    var key = req.query.key;
+    var token = authModel.getToken(user,key);
 
     req.token = token;
     next();
