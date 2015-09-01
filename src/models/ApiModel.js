@@ -1,7 +1,5 @@
-/**
- * Created by James on 9/18/14.
- */
-
-var routes = [];
+var routes = [
+    "api/numbers"
+];
 
 exports.routes = routes;
