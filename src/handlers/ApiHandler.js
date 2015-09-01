@@ -12,13 +12,13 @@ exports.getRoutes = getRoutes;
 
 
 function currentVersion(req,res) {
-    var obj = {
+    var result = {
         version:"0.1",
         about:"This API acts as a gateway for disparate data sources",
         why:"Why not?",
         authentication: {URL:config.host +"api/authenticate",queryParameters:["user","key"]}
     };
-    res.json(obj);
+    res.json(result);
 }
 
 function getRoutes(req,res) {
