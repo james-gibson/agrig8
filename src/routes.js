@@ -46,7 +46,7 @@ var auth = [
 
 exports.setup = function (app) {
     //gets
-    app.get('/', handlers.api.currentVersion);
+    app.get('[/]?', handlers.api.currentVersion);
     app.get('/api/authenticate[/]?',
         login,
         authHandler.authenticate);
