@@ -8,16 +8,7 @@ const PUBLIC = "public"
     , ADMINISTRATION = { SYSTEM: "systemAdministration", USER: "userAdministration", STREAM: "streamAdministration"
     };
 
-var routes = {
-    "public": [],
-    "secured": {
-        "systemAdministration":[],
-        "userAdministration":[],
-        "streamAdministration":[]
-    }
-};
-
-var uniqueRoutes = {};
+var routes = {};
 
 var registerRoute = curry(function(securityLevel, category, name, urlPattern, handler) {
     var route = {
@@ -27,10 +18,10 @@ var registerRoute = curry(function(securityLevel, category, name, urlPattern, ha
         , "pattern": urlPattern
         , "handler": handler
     };
-    if(uniqueRoutes[urlPattern]) { registeredRouteError.emit('registrationError', route); }
+    if(routes[urlPattern]) { registeredRouteError.emit('registrationError', route); return;}
 
     if(!route.secured) {
-        routes.public.push(route);
+
     }
     registeredRoute.emit('registeredSuccessfully', route);
 });
