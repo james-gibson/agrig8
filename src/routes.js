@@ -2,7 +2,8 @@
  * Created by James on 9/18/14.
  */
 
-var authHandler = require('./handlers/AuthenticationHandler.js'),
+var application,
+    authHandler = require('./handlers/AuthenticationHandler.js'),
     authModel = require('./models/AuthenticationModel.js'),
     handlers = {
         api: require('./handlers/ApiHandler.js'),
@@ -45,8 +46,10 @@ var auth = [
 ];
 
 exports.setup = function (app) {
+    application = this.app;
+    //handlers.api.setup(application);
     //gets
-    app.get('[/]?', handlers.api.currentVersion);
+    //app.get('[/]?', handlers.api.currentVersion);
     app.get('/api/authenticate[/]?',
         login,
         authHandler.authenticate);
@@ -59,22 +62,4 @@ exports.setup = function (app) {
     app.post('/api/numbers/:id?',
         auth,
         handlers.numbers.postNumbers);
-   /* app.get('/api/summary[/]?',
-        auth,
-        handlers.resume.getSummary);
-    app.get('/api/employment[/]?',
-        auth,
-        handlers.resume.getEmployment);
-    app.get('/api/social[/]?',
-        auth,
-        handlers.resume.getSocial);
-    app.get('/api/professional[/]?',
-        auth,
-        handlers.resume.getProfessional);
-    app.get('/api/resume[/]?',
-        auth,
-        handlers.resume.getResume);
-    app.get('/api/education[/]?',
-        auth,
-        handlers.resume.getEducation);*/
 }
