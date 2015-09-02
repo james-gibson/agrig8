@@ -26,14 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-api.setup(app);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
 
 // error handlers
 
@@ -62,5 +55,14 @@ app.use(function(err, req, res, next) {
 
 app.listen(port, host);
 console.log("Express server listening on port %d in %s mode", port, app.settings.env);
+
+api.setup(app);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
 
 module.exports = app;
