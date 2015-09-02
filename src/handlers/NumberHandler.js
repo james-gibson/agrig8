@@ -1,11 +1,6 @@
-/**
- * Created by James on 9/20/14.
- */
-
+var apiModel = require('../models/ApiModel.js');
+apiModel.registerStreamAdministrationRoute("stream", '[/]?', function(){});
 var numberModel = require('../models/NumbersModel.js');
-
-exports.getNumbers = getNumbers;
-exports.postNumbers = postNumbers;
 
 function getNumbers(req, res) {
     if(req.value == 'undefined'){
@@ -17,3 +12,7 @@ function getNumbers(req, res) {
 function postNumbers(req, res){
 
 }
+
+exports.getNumbers = getNumbers;
+exports.postNumbers = postNumbers;
+
