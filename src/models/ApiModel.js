@@ -25,8 +25,23 @@ var registerRoute = curry(function(securityLevel, category, name, urlPattern, ha
     }
 
     routes[urlPattern] = route;
+
+    var eventToEmit = '';
+    if(route.secured) {
+        if(route.category === ADMINISTRATION.SYSTEM) {
+            eventToEmit = 'registeredSystemRoute';
+        }else if(route.category === ADMINISTRATION.USER) {
+            eventToEmit = 'registeredUserRoute';
+        }else if(route.category === ADMINISTRATION.STREAM) {
+            eventToEmit = 'registeredStreamRoute';
+        }else {
+            eventToEmit = 'registeredSecuredRoute';
+        }
+    } else
+    {
+        eventToEmit = 'registeredPublicRoute';
     }
-    registeredRoute.emit('registeredSuccessfully', route);
+    registeredRoute.emit(eventToEmit, route);
 });
 
 const registerPublicRoute = registerRoute(PUBLIC, null);
