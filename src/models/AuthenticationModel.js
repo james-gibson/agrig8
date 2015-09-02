@@ -7,6 +7,7 @@ exports.validateToken = validateToken;
 var tokens = validTokens();
 
 function getToken(user,key) {
+    console.log("{user: " + user + ", key: " + key+"}");
     if(user == "KurtEricson" && key =="ClinicalKnowledge") {
         return "AgileMD";
     }  else if (user == "GISI" && key =="Indoors") {
@@ -25,11 +26,12 @@ function validTokens() {
 }
 
 function validateToken(token) {
+    return true;
     var containsToken = false;
     tokens.forEach(function(value){
         if (value === token) {
             containsToken = true;
         }
     });
-    return true;//containsToken;
+    //return true;//containsToken;
 }
