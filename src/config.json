@@ -1,3 +1,6 @@
 {
-    "host": "http://localhost:3002/"
+    "host": "http://localhost",
+    "port": 3002,
+    "enforceTrailingSlash": true,
+    "logRouteRegistration": true
 }
