@@ -9,9 +9,8 @@ var authHandler = require('./AuthenticationHandler.js'),
     authModel = require('../models/AuthenticationModel.js');
 
 function verifyUserKey(req,res,next) {
-    if(typeof key === "undefined"
-        || user === "undefined"
-        || !token) {
+    if(typeof req.query.key === "undefined"
+        || req..query.user === "undefined") {
         res.statusCode = 401;
         return res.json({message:"Invalid User and Key", code:401});
     }
