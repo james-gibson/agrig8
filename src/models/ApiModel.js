@@ -24,6 +24,7 @@ var registerRoute = curry(function(securityLevel, category, name, urlPattern, ha
         return;
     }
 
+    routes[urlPattern] = route;
     }
     registeredRoute.emit('registeredSuccessfully', route);
 });
