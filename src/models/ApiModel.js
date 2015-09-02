@@ -18,9 +18,11 @@ var registerRoute = curry(function(securityLevel, category, name, urlPattern, ha
         , "pattern": urlPattern
         , "handler": handler
     };
-    if(routes[urlPattern]) { registeredRouteError.emit('registrationError', route); return;}
 
-    if(!route.secured) {
+    if(routes[urlPattern]) {
+        registeredRouteError.emit('registrationError', route);
+        return;
+    }
 
     }
     registeredRoute.emit('registeredSuccessfully', route);
