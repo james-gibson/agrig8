@@ -53,20 +53,19 @@ function currentVersion(req,res) {
 }
 
 function getRoutes(req,res) {
-    res.json({});
-    return;
     var urls = [];
-    function convertRouteToUrl(index) {
-        if(index == apiRoutes.length) {
-            res.json(urls);
-            return;
-        }
-        urls.push(config.host+apiRoutes[index]+"?token="+req.token);
-        index++
-        convertRouteToUrl(index);
+
+    for (var route in apiRoutes) {
+        var url = {};
+        url[route] = {
+                'description': apiRoutes[route].description
+                , 'parameters': apiRoutes[route].parameters
+            };
+
+        urls.push(url);
     }
 
-    convertRouteToUrl(0);
+    res.json(urls);
 }
 
 function setup(app) {
