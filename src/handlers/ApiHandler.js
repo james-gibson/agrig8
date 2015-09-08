@@ -10,7 +10,7 @@ var authHandler = require('./AuthenticationHandler.js'),
 
 function verifyUserKey(req,res,next) {
     if(typeof req.query.key === "undefined"
-        || req..query.user === "undefined") {
+        || req.query.user === "undefined") {
         res.statusCode = 401;
         return res.json({message:"Invalid User and Key", code:401});
     }
