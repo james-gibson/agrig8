@@ -77,13 +77,8 @@ function setup(app) {
     setupRoutes();
 }
 
-var preRegisterRoute= function(route) {
+function preRegisterRoute(route) {
     var tempRoute = route;
-    function applyPatternSettings(urlPattern)
-    {
-        var postPattern = config.enforceTrailingSlash ? '[/]?' : '';
-        return urlPattern + postPattern;
-    }
 
     if (config.logRouteRegistration) {
         console.log(JSON.stringify(tempRoute));
