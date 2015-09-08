@@ -71,20 +71,25 @@ function getRoutes(req,res) {
 
 function setup(app) {
     apiModel.routeRegistered.on('registeredSuccessfully', function (route) {
-        if (config.logRouteRegistration) {
-            console.log(JSON.stringify(route));
-        }
-        function applyPatternSettings(urlPattern)
-        {
-            var postPattern = config.enforceTrailingSlash ? '[/]?' : '';
-            return urlPattern + postPattern;
-        }
+
         app.get(applyPatternSettings(route.pattern), route.handler);
     });
 
     setupRoutes();
 }
 
+var preRegisterRoute= function(route) {
+    var tempRoute = route;
+    function applyPatternSettings(urlPattern)
+    {
+        var postPattern = config.enforceTrailingSlash ? '[/]?' : '';
+        return urlPattern + postPattern;
+    }
+
+    if (config.logRouteRegistration) {
+        console.log(JSON.stringify(tempRoute));
+    }
+}
 function setupRoutes() {
     //Not sure if these should be in this class
     apiModel.registerPublicRoute('displayCurrentVersion', '', currentVersion);
