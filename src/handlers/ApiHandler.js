@@ -87,10 +87,12 @@ function preRegisterRoute(route) {
         console.log(JSON.stringify(tempRoute));
     }
 }
+
 function setupRoutes() {
     //Not sure if these should be in this class
-    apiModel.registerPublicRoute('displayCurrentVersion', '', currentVersion);
-    apiModel.registerPublicRoute('displayAvailableRoutes', '/routes', getRoutes);
+    apiModel.registerPublicRoute('get', 'displayCurrentVersion', '', currentVersion, null, 'Gets the current API version information.');
+    apiModel.registerPublicRoute('get', 'displayAvailableRoutes', '/routes/', getRoutes, null, 'Displays the available routes.');
+    apiModel.registerPublicRoute('get', 'test', '/test', getRoutes, {'param1': {'required': true, 'dataType': 'blob'}}, 'Test Description');
 }
 
 exports.setup = setup;
