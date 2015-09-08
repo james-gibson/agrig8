@@ -70,8 +70,11 @@ function getRoutes(req,res) {
 
 function setup(app) {
     apiModel.routeRegistered.on('registeredSuccessfully', function (route) {
-
-        app.get(applyPatternSettings(route.pattern), route.handler);
+        if(!route.method) {
+            // throw error
+        } else {
+            app[route.method](route.pattern, route.handler);
+        }
     });
 
     setupRoutes();
