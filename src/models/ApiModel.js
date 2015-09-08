@@ -11,7 +11,6 @@ const PUBLIC = "public"
 
 var routes = {};
 
-var registerRoute = curry(function(securityLevel, category, name, urlPattern, handler) {
 function applyPatternSettings(urlPattern)
 {
     var prePattern = (config.enforceLeadingSlash && !urlPattern.match(/^\//)) ? '/' : '';
@@ -19,37 +18,28 @@ function applyPatternSettings(urlPattern)
     return prePattern + (urlPattern ? urlPattern.replace(/\/$/, '') + postPattern : '');
 }
 
+var registerRoute = curry(function(securityLevel, category, method, name, urlPattern, handler, parameters, description) {
+    var enforcedPattern = applyPatternSettings(urlPattern);
+    var routeKey = method + ':' + enforcedPattern;
     var route = {
           "secured": securityLevel === SECURED
         , "category": category
+        , "method": method
         , "name": name
-        , "pattern": urlPattern
+        , "pattern": enforcedPattern
         , "handler": handler
+        , "parameters": parameters
+        , "description": description
     };
 
-    if(routes[urlPattern]) {
+    if(routes[routeKey]) {
         registeredRouteError.emit('registrationError', route);
         return;
     }
 
-    routes[urlPattern] = route;
-
-    var eventToEmit = '';
-    if(route.secured) {
-        if(route.category === ADMINISTRATION.SYSTEM) {
-            eventToEmit = 'registeredSystemRoute';
-        }else if(route.category === ADMINISTRATION.USER) {
-            eventToEmit = 'registeredUserRoute';
-        }else if(route.category === ADMINISTRATION.STREAM) {
-            eventToEmit = 'registeredStreamRoute';
-        }else {
-            eventToEmit = 'registeredSecuredRoute';
-        }
-    } else
-    {
-        eventToEmit = 'registeredPublicRoute';
-    }
-    registeredRoute.emit(eventToEmit, route);
+    routes[routeKey] = route;
+    
+    registeredRoute.emit('registeredSuccessfully', route);
 });
 
 const registerPublicRoute = registerRoute(PUBLIC, null);
