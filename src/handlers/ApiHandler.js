@@ -78,6 +78,10 @@ function setup(app) {
         }
     });
 
+    apiModel.routeRegisteredError.on('registrationError', function (route) {
+        console.log('Unable to register route:', route);
+    });
+
     setupRoutes();
 }
 
