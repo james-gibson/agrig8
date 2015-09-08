@@ -2,5 +2,6 @@
     "host": "http://localhost",
     "port": 3002,
     "enforceTrailingSlash": true,
+    "enforceLeadingSlash": true,
     "logRouteRegistration": true
 }

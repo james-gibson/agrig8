@@ -10,7 +10,7 @@ var authHandler = require('./AuthenticationHandler.js'),
 
 function verifyUserKey(req,res,next) {
     if(typeof req.query.key === "undefined"
-        || req..query.user === "undefined") {
+        || req.query.user === "undefined") {
         res.statusCode = 401;
         return res.json({message:"Invalid User and Key", code:401});
     }
@@ -53,42 +53,51 @@ function currentVersion(req,res) {
 }
 
 function getRoutes(req,res) {
-    res.json({});
-    return;
     var urls = [];
-    function convertRouteToUrl(index) {
-        if(index == apiRoutes.length) {
-            res.json(urls);
-            return;
-        }
-        urls.push(config.host+apiRoutes[index]+"?token="+req.token);
-        index++
-        convertRouteToUrl(index);
+
+    for (var route in apiRoutes) {
+        var url = {};
+        url[route] = {
+                'description': apiRoutes[route].description
+                , 'parameters': apiRoutes[route].parameters
+            };
+
+        urls.push(url);
     }
 
-    convertRouteToUrl(0);
+    res.json(urls);
 }
 
 function setup(app) {
     apiModel.routeRegistered.on('registeredSuccessfully', function (route) {
-        if (config.logRouteRegistration) {
-            console.log(JSON.stringify(route));
+        if(!route.method) {
+            // throw error
+        } else {
+            preRegisterRoute(route);
+            app[route.method](route.pattern, route.handler);
         }
-        function applyPatternSettings(urlPattern)
-        {
-            var postPattern = config.enforceTrailingSlash ? '[/]?' : '';
-            return urlPattern + postPattern;
-        }
-        app.get(applyPatternSettings(route.pattern), route.handler);
+    });
+
+    apiModel.routeRegisteredError.on('registrationError', function (route) {
+        console.log('Unable to register route:', route);
     });
 
     setupRoutes();
 }
 
+function preRegisterRoute(route) {
+    var tempRoute = route;
+
+    if (config.logRouteRegistration) {
+        console.log(JSON.stringify(tempRoute));
+    }
+}
+
 function setupRoutes() {
     //Not sure if these should be in this class
-    apiModel.registerPublicRoute('displayCurrentVersion', '', currentVersion);
-    apiModel.registerPublicRoute('displayAvailableRoutes', '/routes', getRoutes);
+    apiModel.registerPublicRoute('get', 'displayCurrentVersion', '', currentVersion, null, 'Gets the current API version information.');
+    apiModel.registerPublicRoute('get', 'displayAvailableRoutes', '/routes/', getRoutes, null, 'Displays the available routes.');
+    apiModel.registerPublicRoute('get', 'test', '/test', getRoutes, {'param1': {'required': true, 'dataType': 'blob'}}, 'Test Description');
 }
 
 exports.setup = setup;
