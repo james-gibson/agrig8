@@ -73,6 +73,7 @@ function setup(app) {
         if(!route.method) {
             // throw error
         } else {
+            preRegisterRoute(route);
             app[route.method](route.pattern, route.handler);
         }
     });
