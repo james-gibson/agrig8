@@ -1,5 +1,6 @@
 var curry = require('curry');
 var EventEmitter = require('events').EventEmitter;
+var config = require('../config.json');
 var   registeredRoute = new EventEmitter()
     , registeredRouteError = new EventEmitter();
 
@@ -11,6 +12,13 @@ const PUBLIC = "public"
 var routes = {};
 
 var registerRoute = curry(function(securityLevel, category, name, urlPattern, handler) {
+function applyPatternSettings(urlPattern)
+{
+    var prePattern = (config.enforceLeadingSlash && !urlPattern.match(/^\//)) ? '/' : '';
+    var postPattern = (config.enforceTrailingSlash && !urlPattern.match(/\[\/\]$/)) ? '[/]?' : '';
+    return prePattern + (urlPattern ? urlPattern.replace(/\/$/, '') + postPattern : '');
+}
+
     var route = {
           "secured": securityLevel === SECURED
         , "category": category
