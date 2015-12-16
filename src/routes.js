@@ -6,7 +6,7 @@ var application,
     authHandler = require('./handlers/AuthenticationHandler.js'),
     authModel = require('./models/AuthenticationModel.js'),
     handlers = {
-        api: require('./handlers/ApiHandler.js'),
+        api: require('./handlers/apiHandler.js'),
         numbers: require('./handlers/NumberHandler.js')
     };
 

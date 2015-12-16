@@ -1,47 +1,9 @@
-//var fs = require('fs');
-var EventEmitter = require('events').EventEmitter;
-var curry = require('curry');
 var config = require('../config.json');
-var apiModel = require('../models/ApiModel.js');
+var apiModel = require('../models/apiModel.js');
 
-var apiRoutes = apiModel.routes;
-var authHandler = require('./AuthenticationHandler.js'),
-    authModel = require('../models/AuthenticationModel.js');
+var models = {
 
-function verifyUserKey(req,res,next) {
-    if(typeof req.query.key === "undefined"
-        || req.query.user === "undefined") {
-        res.statusCode = 401;
-        return res.json({message:"Invalid User and Key", code:401});
-    }
-
-    var streamToken = req.query.id;
-    var key = req.query.key;
-    var token = authModel.getToken(user,key);
-
-    req.token = token;
-    next();
 }
-
-function verifyAPIToken(req,res,next) {
-    var token = req.query.token;
-
-    if(!authModel.validateToken(token)) {
-        res.statusCode = 401;
-        return res.json({message:"Invalid Token", code:401});
-    }
-
-    req.token = token;
-    next();
-}
-
-var login = [
-    verifyUserKey
-];
-var auth = [
-    verifyAPIToken
-];
-
 function currentVersion(req,res) {
     var result = {
         version:"0.1",
@@ -54,13 +16,13 @@ function currentVersion(req,res) {
 
 function getRoutes(req,res) {
     var urls = [];
-
+    var apiRoutes = apiModel.routes;
     for (var route in apiRoutes) {
         var url = {};
         url[route] = {
-                'description': apiRoutes[route].description
-                , 'parameters': apiRoutes[route].parameters
-            };
+            'description': apiRoutes[route].description
+            , 'parameters': apiRoutes[route].parameters
+        };
 
         urls.push(url);
     }
@@ -94,12 +56,13 @@ function preRegisterRoute(route) {
 }
 
 function setupRoutes() {
+    for(var prop in models){
+        models[prop].init(apiModel);
+    }
     //Not sure if these should be in this class
     apiModel.registerPublicRoute('get', 'displayCurrentVersion', '', currentVersion, null, 'Gets the current API version information.');
     apiModel.registerPublicRoute('get', 'displayAvailableRoutes', '/routes/', getRoutes, null, 'Displays the available routes.');
-    apiModel.registerPublicRoute('get', 'test', '/test', getRoutes, {'param1': {'required': true, 'dataType': 'blob'}}, 'Test Description');
+
 }
 
 exports.setup = setup;
-exports.currentVersion = currentVersion;
-exports.getRoutes = getRoutes;

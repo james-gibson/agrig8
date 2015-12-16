@@ -1,4 +1,4 @@
-var apiModel = require('../models/ApiModel.js');
+var apiModel = require('../models/apiModel.js');
 apiModel.registerStreamAdministrationRoute("stream", '[/]?', function(){});
 var numberModel = require('../models/NumbersModel.js');
 
